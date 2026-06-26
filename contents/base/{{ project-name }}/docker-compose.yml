@@ -1,0 +1,3 @@
+services:
+  # No external services required for a basic service.
+  # Add services here (postgres, redis, etc.) as you add resource dependencies.
