@@ -13,11 +13,11 @@ pub struct AppState {
     settings: CoreSettings,
 }
 
-pub struct {{ PrefixName }}{{ SuffixName }}Core {
+pub struct {{ ProjectName }}Core {
     state: AppState,
 }
 
-impl {{ PrefixName }}{{ SuffixName }}Core {
+impl {{ ProjectName }}Core {
     pub fn builder() -> Builder {
         Builder::new()
     }
@@ -47,8 +47,8 @@ impl Builder {
         self
     }
 
-    pub async fn build(self) -> Result<{{ PrefixName }}{{ SuffixName }}Core> {
-        Ok({{ PrefixName }}{{ SuffixName }}Core {
+    pub async fn build(self) -> Result<{{ ProjectName }}Core> {
+        Ok({{ ProjectName }}Core {
             state: AppState {
                 settings: self.settings,
             },

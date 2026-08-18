@@ -1,6 +1,6 @@
 use figment::{Figment, providers::{Format, Toml, Env, Serialized}};
 use serde::{Deserialize, Serialize};
-use {{ prefix_name }}_{{ suffix_name }}_core::settings::CoreSettings;
+use {{ project_name }}_core::settings::CoreSettings;
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Settings {

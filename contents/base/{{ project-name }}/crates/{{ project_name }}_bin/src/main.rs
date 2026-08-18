@@ -5,7 +5,7 @@ mod cli;
 mod otel;
 mod settings;
 
-use {{ prefix_name }}_{{ suffix_name }}_core::{{ PrefixName }}{{ SuffixName }}Core;
+use {{ project_name }}_core::{{ ProjectName }}Core;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -34,13 +34,13 @@ async fn main() -> Result<()> {
         None => {
             tracing::info!("Starting {{ project-name }}...");
 
-            let core = {{ PrefixName }}{{ SuffixName }}Core::builder()
+            let core = {{ ProjectName }}Core::builder()
                 .with_settings(&settings.core)
                 .build()
                 .await?;
 
             let svc_router = core.router();
-            let mgmt_router = {{ PrefixName }}{{ SuffixName }}Core::management_router();
+            let mgmt_router = {{ ProjectName }}Core::management_router();
 
             // Service server — domain traffic on service_port
             let svc_addr = format!("{}:{}", settings.server.host, settings.server.port);
