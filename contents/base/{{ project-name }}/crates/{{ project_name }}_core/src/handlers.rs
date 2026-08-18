@@ -1,6 +1,11 @@
-use axum::{Json, extract::State, http::{header, StatusCode}, response::IntoResponse};
-use serde::Serialize;
 use crate::AppState;
+use axum::{
+    extract::State,
+    http::{header, StatusCode},
+    response::IntoResponse,
+    Json,
+};
+use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct HealthResponse {
@@ -15,15 +20,12 @@ pub async fn liveness() -> Json<HealthResponse> {
     Json(HealthResponse { status: "ok" })
 }
 
-/// Prometheus metrics endpoint.
-/// Returns metrics collected by the `metrics` crate via `metrics-exporter-prometheus`.
-pub async fn metrics() -> impl IntoResponse {
-    // TODO: wire up metrics-exporter-prometheus handle and return rendered text.
-    // For now returns an empty valid Prometheus response so Kubernetes scraping succeeds.
+/// Prometheus metrics endpoint: renders everything the installed recorder has collected.
+pub async fn metrics(handle: metrics_exporter_prometheus::PrometheusHandle) -> impl IntoResponse {
     (
         StatusCode::OK,
         [(header::CONTENT_TYPE, "text/plain; version=0.0.4; charset=utf-8")],
-        "# Prometheus metrics\n",
+        handle.render(),
     )
 }
 

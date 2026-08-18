@@ -17,7 +17,11 @@ use tracing_subscriber::util::SubscriberInitExt;
 use tracing_subscriber::{EnvFilter, Layer};
 
 pub fn init_tracing(structured: bool) {
-    let env_filter = EnvFilter::from_default_env();
+    // Default to `info` when RUST_LOG is unset — services must emit their startup and request
+    // logs out of the box. `from_default_env()` with no RUST_LOG yields an EMPTY filter, so the
+    // service logged nothing at all and S4 failed in both directions at once: no JSON lines with
+    // the flag on, and (vacuously) no non-JSON lines with it off.
+    let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
 
     // Format layer: JSON in non-local environments, human-readable otherwise.
     // Boxed so both variants share a single concrete type — required because the
